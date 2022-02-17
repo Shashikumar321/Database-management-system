@@ -1,0 +1,186 @@
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.SystemColor;
+import javax.swing.SwingConstants;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
+import java.awt.Font;
+
+public class UpdatePlayers extends JFrame {
+
+	private JPanel contentPane;
+	
+	public Connection con = null;
+	public Statement smt = null;
+	public PreparedStatement psmt = null;
+	public ResultSet rs = null;
+	public int PID;
+	private JTextField IDtextField;
+	private JTextField NametextField;
+	private JTextField agetextField;
+	private JTextField CountytextField;
+	private JTextField CodetextField;
+	private JTextField TourtextField;
+	private JTextField AcestextField;
+	public UpdatePlayers() {
+		PID = PlayerSearch.PID;
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setSize(500,500);
+		setVisible(true);
+		setLocationRelativeTo(null);
+		contentPane = new JPanel();
+		contentPane.setBackground(SystemColor.inactiveCaption);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblUpdateDetails = new JLabel("Update Details");
+		lblUpdateDetails.setFont(new Font("Times New Roman", Font.ITALIC, 18));
+		lblUpdateDetails.setHorizontalAlignment(SwingConstants.CENTER);
+		lblUpdateDetails.setBounds(175, 24, 130, 30);
+		contentPane.add(lblUpdateDetails);
+		
+		JLabel lblNewLabel = new JLabel("Player_ID");
+		lblNewLabel.setFont(new Font("Tahoma", Font.ITALIC, 13));
+		lblNewLabel.setBounds(50, 85, 85, 20);
+		contentPane.add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("Player_name");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.ITALIC, 13));
+		lblNewLabel_1.setBounds(50, 129, 85, 20);
+		contentPane.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("Age");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.ITALIC, 13));
+		lblNewLabel_2.setBounds(50, 179, 85, 20);
+		contentPane.add(lblNewLabel_2);
+		
+		JLabel lblNewLabel_3 = new JLabel("Country Name");
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.ITALIC, 13));
+		lblNewLabel_3.setBounds(50, 231, 85, 20);
+		contentPane.add(lblNewLabel_3);
+		
+		JLabel lblNewLabel_4 = new JLabel("Country Code");
+		lblNewLabel_4.setFont(new Font("Tahoma", Font.ITALIC, 13));
+		lblNewLabel_4.setBounds(50, 277, 85, 20);
+		contentPane.add(lblNewLabel_4);
+		
+		JLabel lblNewLabel_5 = new JLabel("Tour's Won");
+		lblNewLabel_5.setFont(new Font("Tahoma", Font.ITALIC, 13));
+		lblNewLabel_5.setBounds(50, 325, 85, 20);
+		contentPane.add(lblNewLabel_5);
+		
+		JLabel lblNewLabel_6 = new JLabel("No of Aces");
+		lblNewLabel_6.setFont(new Font("Tahoma", Font.ITALIC, 13));
+		lblNewLabel_6.setBounds(50, 370, 85, 20);
+		contentPane.add(lblNewLabel_6);
+		
+		JButton btnUpdate = new JButton("Update");
+		btnUpdate.setFont(new Font("Times New Roman", Font.ITALIC, 14));
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					con=driver.myconn();
+					psmt=con.prepareStatement("update Players set Player_name=?,Age=?,Country=?,Country_code=?,No_Of_Tournaments=?,No_Of_Aces=? where pla_id = ?");
+					psmt.setString(1, NametextField.getText());
+					psmt.setInt(2, Integer.parseInt(agetextField.getText()));
+					psmt.setString(3, CountytextField.getText());
+					psmt.setString(4, CodetextField.getText());
+					psmt.setInt(5, Integer.parseInt(TourtextField.getText()));
+					psmt.setInt(6, Integer.parseInt(AcestextField.getText()));
+					psmt.setInt(7, PID);
+					psmt.executeUpdate();
+					JOptionPane.showMessageDialog(UpdatePlayers.this,"Successfuly Updated","Info",JOptionPane.INFORMATION_MESSAGE);
+					dispose();
+					new PlayerSearch();
+				}catch(SQLException e2) {
+					e2.printStackTrace();
+				}
+			}
+		});
+		btnUpdate.setBounds(250, 415, 89, 23);
+		contentPane.add(btnUpdate);
+		
+		JButton button = new JButton("Back");
+		button.setFont(new Font("Times New Roman", Font.ITALIC, 14));
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				new PlayerSearch();
+			}
+		});
+		button.setBounds(365, 415, 89, 23);
+		contentPane.add(button);
+		
+		IDtextField = new JTextField();
+		IDtextField.setBounds(200, 82, 130, 20);
+		contentPane.add(IDtextField);
+		IDtextField.setColumns(10);
+		
+		NametextField = new JTextField();
+		NametextField.setBounds(200, 126, 130, 20);
+		contentPane.add(NametextField);
+		NametextField.setColumns(10);
+		
+		agetextField = new JTextField();
+		agetextField.setBounds(200, 176, 130, 20);
+		contentPane.add(agetextField);
+		agetextField.setColumns(10);
+		
+		CountytextField = new JTextField();
+		CountytextField.setBounds(200, 228, 130, 20);
+		contentPane.add(CountytextField);
+		CountytextField.setColumns(10);
+		
+		CodetextField = new JTextField();
+		CodetextField.setBounds(200, 277, 130, 20);
+		contentPane.add(CodetextField);
+		CodetextField.setColumns(10);
+		
+		TourtextField = new JTextField();
+		TourtextField.setBounds(200, 322, 130, 20);
+		contentPane.add(TourtextField);
+		TourtextField.setColumns(10);
+		
+		AcestextField = new JTextField();
+		AcestextField.setBounds(200, 367, 130, 20);
+		contentPane.add(AcestextField);
+		AcestextField.setColumns(10);
+		
+		setThings();
+	}
+	public void setThings() {
+		try {
+			con = driver.myconn();
+			psmt = con.prepareStatement("Select * from Players where Pla_Id = ?");
+			psmt.setInt(1, PID);
+			rs = psmt .executeQuery();
+			if(rs.next()) {
+				IDtextField.setText(String.valueOf(rs.getInt("Pla_Id")));
+				IDtextField.setEditable(false);
+				NametextField.setText(rs.getString("Player_name"));
+				CountytextField.setText(rs.getString("Country"));
+				CodetextField.setText(rs.getString("Country_code"));
+				agetextField.setText(String.valueOf(rs.getInt("Age")));
+				TourtextField.setText(String.valueOf(rs.getInt("No_Of_Tournaments")));
+				AcestextField.setText(String.valueOf(rs.getInt("No_Of_Aces")));			
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+}

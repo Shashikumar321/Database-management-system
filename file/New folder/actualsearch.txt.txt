@@ -1,0 +1,81 @@
+package jdbcdemo;
+import java.sql.*;
+import java.util.*;
+public class Playerdao {
+    public static Connection myconn = null;
+    public static List<Players> getAllPlayers() throws Exception{
+    	myconn = driver.myconn();
+    	List<Players> list=new ArrayList<>();
+    	Statement stmt=null;
+    	ResultSet rs=null;
+    	try {
+    		stmt=myconn.createStatement();
+    		rs=stmt.executeQuery("select * from Players");
+    		while(rs.next()) {
+    			Players tempPlayers=convertRowToPlayers(rs);
+    			list.add(tempPlayers);
+    		}
+    		return list;
+    	}
+    	finally {
+    		close(myconn,stmt,rs);
+    	}
+    	
+    }
+    public static List<Players> search(String Name) throws Exception{
+    	myconn = driver.myconn();
+    	List<Players> list=new ArrayList<>();
+    	PreparedStatement mystmt=null;
+    	ResultSet myrs=null;
+    	try {
+    		Name+="%";
+    		mystmt=myconn.prepareStatement("select * from Players where Player_name like ?");
+    		mystmt.setString(1, Name);
+    		myrs=mystmt.executeQuery();
+    		while(myrs.next()) {
+    			Players tempPlayers=convertRowToPlayers(myrs);
+    			list.add(tempPlayers);
+    		}
+    		return list;
+    	}
+    	finally {
+    		close(myconn,mystmt,myrs);
+    	}
+    	
+    	
+    }	private static Players convertRowToPlayers(ResultSet myRs) throws SQLException  {
+    		
+    		int id = myRs.getInt("Pla_id");
+    		String Name = myRs.getString("Player_name");
+    		int age = myRs.getInt("Age");
+    		String Country = myRs.getString("Country");
+    		String Ccode = myRs.getString("Country_code");
+    		int wins = myRs.getInt("No_Of_Tournaments");
+    		int aces = myRs.getInt("No_Of_aces");
+    		
+    		Players tempPlayers = new Players(id,Name,age,Country,Ccode,wins,aces);
+			return tempPlayers;
+    	}
+    private static void close(Connection myConn, Statement myStmt, ResultSet myRs)
+			throws SQLException {
+
+		if (myRs != null) {
+			myRs.close();
+		}
+
+		if (myStmt != null) {
+			
+		}
+		
+		if (myConn != null) {
+			myConn.close();
+		}
+	}
+
+	private void close(Statement myStmt, ResultSet myRs) throws SQLException {
+		close(null, myStmt, myRs);		
+	}
+
+}
+    	
+

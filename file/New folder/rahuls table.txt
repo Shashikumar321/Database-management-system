@@ -1,0 +1,166 @@
+package jdbcdemo;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import java.awt.SystemColor;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.awt.event.ActionEvent;
+
+public class RegisterFrame extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField AgeTextField;
+	private JTextField CountryTextField;
+	private JTextField TourTextField;
+	private JTextField DateTextField;
+	private JTextField AmountTextField;
+	private JTextField NameTextField;
+	public Connection con = null;
+	public PreparedStatement smt = null;
+	public RegisterFrame() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(800,450);
+		setLocation(300,100);
+		setVisible(true);
+		setResizable(false);
+		contentPane = new JPanel();
+		contentPane.setBackground(SystemColor.activeCaption);
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("Registration");
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setFont(new Font("Times New Roman", Font.ITALIC, 20));
+		lblNewLabel.setBounds(325, 10, 150, 30);
+		contentPane.add(lblNewLabel);
+		
+		JLabel lblCustomerDetails = new JLabel("Player Details");
+		lblCustomerDetails.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCustomerDetails.setFont(new Font("Times New Roman", Font.ITALIC, 18));
+		lblCustomerDetails.setBounds(110, 55, 120, 25);
+		contentPane.add(lblCustomerDetails);
+		
+		JLabel lblNewLabel_1 = new JLabel("Name");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNewLabel_1.setFont(new Font("Times New Roman", Font.ITALIC, 13));
+		lblNewLabel_1.setBounds(70, 100, 90, 20);
+		contentPane.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_2 = new JLabel("Age");
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNewLabel_2.setFont(new Font("Times New Roman", Font.ITALIC, 14));
+		lblNewLabel_2.setBounds(70, 150, 90, 20);
+		contentPane.add(lblNewLabel_2);
+		
+		JLabel lblNewLabel_3 = new JLabel("Country Name");
+		lblNewLabel_3.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNewLabel_3.setFont(new Font("Times New Roman", Font.ITALIC, 14));
+		lblNewLabel_3.setBounds(70, 200, 90, 20);
+		contentPane.add(lblNewLabel_3);
+		
+		JLabel lblNewLabel_4 = new JLabel("No_Of_Tournaments _Won");
+		lblNewLabel_4.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNewLabel_4.setFont(new Font("Times New Roman", Font.ITALIC, 14));
+		lblNewLabel_4.setBounds(10, 250, 160, 20);
+		contentPane.add(lblNewLabel_4);
+		
+		AgeTextField = new JTextField();
+		AgeTextField.setBounds(180, 150, 120, 20);
+		contentPane.add(AgeTextField);
+		AgeTextField.setColumns(10);
+		
+		CountryTextField = new JTextField();
+		CountryTextField.setBounds(180, 200, 120, 20);
+		contentPane.add(CountryTextField);
+		CountryTextField.setColumns(10);
+		
+		TourTextField = new JTextField();
+		TourTextField.setBounds(180, 250, 120, 20);
+		contentPane.add(TourTextField);
+		TourTextField.setColumns(10);
+		
+		JLabel lblRegistrationDetails = new JLabel("Registration Details");
+		lblRegistrationDetails.setFont(new Font("Times New Roman", Font.ITALIC, 18));
+		lblRegistrationDetails.setBounds(570, 55, 150, 30);
+		contentPane.add(lblRegistrationDetails);
+		
+		JLabel lblNewLabel_5 = new JLabel(" Reg Date");
+		lblNewLabel_5.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNewLabel_5.setFont(new Font("Times New Roman", Font.ITALIC, 14));
+		lblNewLabel_5.setBounds(535, 103, 90, 20);
+		contentPane.add(lblNewLabel_5);
+		
+		JLabel lblNewLabel_6 = new JLabel("Reg Amount");
+		lblNewLabel_6.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblNewLabel_6.setFont(new Font("Times New Roman", Font.ITALIC, 14));
+		lblNewLabel_6.setBounds(535, 154, 90, 20);
+		contentPane.add(lblNewLabel_6);
+		
+		DateTextField = new JTextField();
+		DateTextField.setBounds(645, 100, 120, 20);
+		contentPane.add(DateTextField);
+		DateTextField.setColumns(10);
+		
+		AmountTextField = new JTextField();
+		AmountTextField.setEditable(false);
+		AmountTextField.setEnabled(false);
+		AmountTextField.setText("5000");
+		AmountTextField.setBounds(645, 150, 120, 20);
+		contentPane.add(AmountTextField);
+		AmountTextField.setColumns(10);
+		
+		JButton btnSubmit = new JButton("Submit");
+		btnSubmit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					con = driver.myconn();
+					smt = con.prepareStatement("Insert into Players (Name,Age,Country,Country_code,No_Of_Tournoments,No_Aces) values()");
+					
+					
+				}catch(SQLException se) {
+					se.printStackTrace();
+				}
+			}
+		});
+		btnSubmit.setBounds(590, 363, 89, 23);
+		contentPane.add(btnSubmit);
+		
+		JButton btnBack = new JButton("Back");
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+		btnBack.setBounds(695, 363, 89, 23);
+		contentPane.add(btnBack);
+		
+		NameTextField = new JTextField();
+		NameTextField.setBounds(180, 100, 120, 20);
+		contentPane.add(NameTextField);
+		NameTextField.setColumns(10);
+		
+		JLabel lblNoofaces = new JLabel("No_Of_Aces");
+		lblNoofaces.setFont(new Font("Times New Roman", Font.ITALIC, 14));
+		lblNoofaces.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNoofaces.setBounds(80, 300, 90, 20);
+		contentPane.add(lblNoofaces);
+		
+		JButton button = new JButton("");
+		button.setBounds(180, 300, 120, 20);
+		contentPane.add(button);
+	}
+}

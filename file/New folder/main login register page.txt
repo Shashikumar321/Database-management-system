@@ -1,0 +1,130 @@
+package jdbcdemo;
+import java.sql.*;
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import com.mysql.jdbc.Statement;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JPasswordField;
+
+public class Register extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField textField;
+	public Connection myConn=null;
+	public Statement stmt=null;
+	int flag=0;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	public Register() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		setVisible(true);
+		setTitle("Register");
+		setResizable(false);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		JLabel lblNewUserRegistration = new JLabel("New User Registration");
+		lblNewUserRegistration.setFont(new Font("Times New Roman", Font.BOLD, 14));
+		lblNewUserRegistration.setBounds(160, 11, 140, 20);
+		contentPane.add(lblNewUserRegistration);
+		
+		JLabel lblUsername = new JLabel("Username");
+		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
+		lblUsername.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		lblUsername.setBounds(30, 75, 100, 14);
+		contentPane.add(lblUsername);
+		
+		JLabel lblNewPs = new JLabel("New Password");
+		lblNewPs.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewPs.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		lblNewPs.setBounds(30, 120, 100, 14);
+		contentPane.add(lblNewPs);
+		
+		JLabel lblConfirmPassword = new JLabel("Confirm Password");
+		lblConfirmPassword.setHorizontalAlignment(SwingConstants.CENTER);
+		lblConfirmPassword.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		lblConfirmPassword.setBounds(30, 165, 100, 15);
+		contentPane.add(lblConfirmPassword);
+		
+		textField = new JTextField();
+		textField.setBounds(180, 74, 100, 15);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(180, 117, 100, 15);
+		contentPane.add(textField_1);
+		textField_1.setColumns(10);
+		
+		textField_2 = new JTextField();
+		textField_2.setBounds(182, 162, 100, 15);
+		contentPane.add(textField_2);
+		textField_2.setColumns(10);
+		
+		JButton btnNewButton = new JButton("Sign Up");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			try
+			{
+				String username=textField.getText();	
+			 String password=textField_1.getText();
+			 String repass=textField_2.getText();
+			  if(username.equals("")|| password.equals("")|| repass.equals("")) {
+				  JOptionPane.showMessageDialog(Register.this,"A Field is empty","Warning",JOptionPane.WARNING_MESSAGE);
+			  }
+			  else
+			  {
+				  myConn=driver.myconn();
+				  stmt=(Statement)myConn.createStatement();
+				  ResultSet rs=stmt.executeQuery("select * from Users");
+				  while(rs.next()) {
+                         if(rs.getString("Username").equals(username)) {
+                        	 JOptionPane.showMessageDialog(Register.this,"Username Exists","Info",JOptionPane.INFORMATION_MESSAGE);
+                            flag=1;
+                            textField.setText("");
+                            textField_1.setText("");
+                            textField_2.setText("");
+                            break;
+                         }
+				  }
+				  if(flag==0 && password.equals(repass)){
+					   PreparedStatement smt=myConn.prepareStatement("insert into Users(Username,Password) values(?,?)");
+					   smt.setString(1, username);
+					   smt.setString(2, repass);
+					   smt.executeUpdate();
+					  JOptionPane.showMessageDialog(Register.this,"Successful_login","Info",JOptionPane.INFORMATION_MESSAGE);
+					  new login_page();
+					  dispose();
+				  }else if(flag==0 && !(password.equals(repass))) {
+					  JOptionPane.showMessageDialog(Register.this,"Retyped password incorrect","Warning",JOptionPane.WARNING_MESSAGE);
+					  textField_2.setText("");
+				  }
+			  }
+			}catch(Exception e3) {
+				e3.printStackTrace();
+			}
+			}
+		});
+		btnNewButton.setFont(new Font("Times New Roman", Font.BOLD, 12));
+		btnNewButton.setBounds(180, 215, 100, 15);
+		contentPane.add(btnNewButton);
+	}
+}
+

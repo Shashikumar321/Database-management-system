@@ -1,0 +1,134 @@
+package jdbcdemo;
+import java.awt.EventQueue;
+import java.sql.*;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.JPasswordField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Font;
+import java.awt.SystemColor;
+
+public class login_page {
+
+	private JFrame frame;
+	private JTextField txtUsername;
+	private JPasswordField txtpassword;
+    public Connection myconn;
+    int flag=0;
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					login_page window = new login_page();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public login_page() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.getContentPane().setBackground(SystemColor.activeCaption);
+		frame.setBounds(300, 200, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JLabel login = new JLabel("User Login");
+		login.setForeground(SystemColor.menu);
+		login.setFont(new Font("Times New Roman", Font.ITALIC, 20));
+		login.setBounds(175, 10, 100, 30);
+		frame.getContentPane().add(login);
+		
+		JLabel Username = new JLabel("Username");
+		Username.setFont(new Font("Times New Roman", Font.ITALIC, 14));
+		Username.setBounds(50, 75, 60, 20);
+		frame.getContentPane().add(Username);
+		
+		JLabel Password = new JLabel("Password");
+		Password.setFont(new Font("Times New Roman", Font.ITALIC, 14));
+		Password.setBounds(50, 130, 60, 20);
+		frame.getContentPane().add(Password);
+		
+		txtUsername = new JTextField();
+		txtUsername.setBounds(170, 70, 120, 20);
+		frame.getContentPane().add(txtUsername);
+		txtUsername.setColumns(30);
+		
+		txtpassword = new JPasswordField();
+		txtpassword.setColumns(30);
+		txtpassword.setBounds(170, 130, 120, 20);
+		frame.getContentPane().add(txtpassword);
+		
+		JButton Login = new JButton("LOGIN");
+		Login.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String password=txtpassword.getText();
+				String username=txtUsername.getText();
+				myconn=driver.myconn();
+				try
+				{
+					Statement stmt=myconn.createStatement();
+					ResultSet rs=stmt.executeQuery("select * from Users");
+					while(rs.next()){
+						if(rs.getString("Username").equals(username)&& rs.getString("Password").equals(password))
+						{
+							frame.dispose();
+							new Cover_page();
+							JOptionPane.showMessageDialog(null, "Successfully logged in");
+							 flag=1;
+						}
+					}
+				}catch(SQLException e2) {
+					System.out.println(e2);
+				}
+				if(flag==0) {
+					JOptionPane.showMessageDialog(null, "Invalid Username and Password");
+					txtpassword.setText(null);
+					txtUsername.setText(null);
+				}
+			
+			}
+		});
+		Login.setBounds(173, 191, 89, 23);
+		frame.getContentPane().add(Login);
+		
+		JButton Reset = new JButton("RESET");
+		Reset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txtUsername.setText(null);
+				txtpassword.setText(null);	
+			}
+		});
+		Reset.setBounds(36, 193, 89, 23);
+		frame.getContentPane().add(Reset);
+		
+		JButton btnRegister = new JButton("Register");
+		btnRegister.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Register();
+				}
+		});
+		btnRegister.setBounds(312, 191, 89, 23);
+		frame.getContentPane().add(btnRegister);
+	}
+}

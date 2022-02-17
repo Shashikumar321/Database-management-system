@@ -1,0 +1,84 @@
+package jdbcdemo;
+
+public class Players {
+   private int id;
+   private String Name;
+   private int age;
+   private String Country;
+   private String Country_code;
+   private int No_Of_Tournaments_won;
+   private int No_Of_aces;
+   Players(int Id,String name,int ag,String c,String cc,int w,int a)
+    {
+			super();
+			id = Id;
+		    Name = name;
+			age = ag;
+			Country = c;
+			Country_code = cc;
+			No_Of_Tournaments_won=w;
+			No_Of_aces=a;
+		}
+
+		public int getId() {
+			return id;
+		}
+
+		public void setId(int Id) {
+			this.id = Id;
+		}
+
+		public String getName() {
+			return Name;
+		}
+
+		public void setName(String name) {
+			Name = name;
+		}
+
+		public int getAge() {
+			return age;
+		}
+
+		public void setAge(int ag) {
+			age = ag;
+		}
+
+		public String getCountry() {
+			return Country;
+		}
+
+		public void setEmail(String c) {
+			Country = c;
+		}
+
+		public String getCountry_code() {
+			return Country_code;
+		}
+
+		public void setCountry_code(String cc) {
+			Country_code = cc;
+		}
+		public int getWon() {
+			return No_Of_Tournaments_won;
+		}
+
+		public void setWon(int w) {
+			No_Of_Tournaments_won = w;
+		}
+		public int getAces() {
+			return No_Of_aces;
+		}
+
+		public void setAces(int a) {
+			No_Of_aces = a;
+		}
+		@Override
+		public String toString() {
+			return String
+					.format("Players [id=%s, Name=%s, age=%s, Country=%s, Country_code=%s, No_Of_Tournaments_won=%s, No_Of_aces=%s]",
+							id, Name, age, Country, Country_code,No_Of_Tournaments_won,No_Of_aces);
+		}
+		
+   }
+

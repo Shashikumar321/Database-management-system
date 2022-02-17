@@ -1,0 +1,25 @@
+	JButton btnUpdate = new JButton("Update");
+		btnUpdate.setFont(new Font("Times New Roman", Font.ITALIC, 12));
+		btnUpdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			try {
+				int row=table.getSelectedRow();
+				if(row < 0){
+					JOptionPane.showMessageDialog(PlayerSearch.this,"Please select a player", "warning",JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				PID=Integer.parseInt(table.getModel().getValueAt(row,0).toString());
+				dispose();
+				new UpdatePlayers();
+				}catch(Exception e7) {
+					e7.printStackTrace();
+				}
+			
+			
+			}
+			
+		});
+		btnUpdate.setBackground(SystemColor.inactiveCaption);
+		btnUpdate.setForeground(SystemColor.controlText);
+		btnUpdate.setBounds(450, 343, 89, 25);
+		contentPane.add(btnUpdate);

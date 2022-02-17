@@ -1,0 +1,70 @@
+package jdbcdemo;
+import java.util.*;
+
+import javax.swing.table.AbstractTableModel;
+
+
+class PlayerTableModel extends AbstractTableModel {
+	private static final int Pla_id_COL = 0;
+	private static final int NAME_COL = 1;
+	private static final int Age_COL = 2;
+	private static final int Country_COL = 3;
+	private static final int Country_code_COL = 4;
+	private static final int Tournaments_won_COL = 5;
+	private static final int Aces_COL = 6;
+
+	private String[] columnNames = { "Player_Id", "Name", "Age","Country","Country_code",
+      			"Tournaments_won","Aces Scored" };
+	private List<Players> players;
+
+	public PlayerTableModel(List<Players> thePlayers) {
+		players = thePlayers;
+	}
+
+	@Override
+	public int getColumnCount() {
+		return columnNames.length;
+	}
+
+	@Override
+	public int getRowCount() {
+		return players.size();
+	}
+
+	@Override
+	public String getColumnName(int col) {
+		return columnNames[col];
+	}
+
+	@Override
+	public Object getValueAt(int row, int col) {
+
+		Players tempplayers = players.get(row);
+
+		switch (col) {
+		case Pla_id_COL:
+			return tempplayers.getId();
+		case NAME_COL:
+			return tempplayers.getName();
+		case Age_COL:
+			return tempplayers.getAge();
+		case Country_COL:
+			return tempplayers.getCountry();
+		case Country_code_COL:
+			return tempplayers.getCountry_code();
+		case Tournaments_won_COL:
+			return tempplayers.getWon();
+		case Aces_COL:
+			return tempplayers.getAces();		
+		default:
+			return tempplayers.getName();
+		}
+	}
+
+	@Override
+	public Class getColumnClass(int c) {
+		return getValueAt(0, c).getClass();
+	}
+}
+
+
